@@ -1,0 +1,28 @@
+{
+  "port": 8080,
+  "interval": "1m",
+  "database": {
+    "driver": "mysql",
+    "dsn": "user:password@tcp(localhost:3306)/database",
+    "max_open": 10,
+    "max_idle": 5,
+    "lifetime": 300
+  },
+  "metrics": [
+    {
+      "name": "active_users",
+      "query": "SELECT COUNT(*) as value FROM users WHERE last_active > DATE_SUB(NOW(), INTERVAL 15 MINUTE)",
+      "interval": "1m"
+    },
+    {
+      "name": "users_by_status",
+      "query": "SELECT status, COUNT(*) as value FROM users GROUP BY status",
+      "interval": "5m"
+    },
+    {
+      "name": "orders_by_status_and_payment",
+      "query": "SELECT status, payment_method, COUNT(*) as value FROM orders GROUP BY status, payment_method",
+      "interval": "2m"
+    },
+  ]
+} 
